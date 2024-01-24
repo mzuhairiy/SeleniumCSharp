@@ -60,7 +60,18 @@ namespace TestingProject
                 //string imgAlt = productImage.GetAttribute("alt");
                 //Console.WriteLine($"Img ALt Text: {imgAlt}");
 
+                IWebElement productPrice = product.FindElement(By.CssSelector("div.inventory_item_price"));
+                bool verPrc = productPrice.Displayed;
+                Assert.IsTrue(verPrc, "Product price is not displayed");
+                string price = productPrice.Text;
+                Console.WriteLine($"Price Tag for product {productList.ToList().IndexOf(product) + 1}: {price}");
             }
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            driver.Close();
         }
     }
 }
