@@ -24,9 +24,8 @@ namespace TestingProject
         }
 
         [Test]
-        public void TestCase1()
+        public void TestCase1() //Login with valid credential
         {
-            //Verify web is loaded.
             IWebElement logo = driver.FindElement(By.CssSelector(".login_logo"));
             bool verLogo = logo.Displayed;
             Assert.IsTrue(verLogo, "Logo is not displayed.");
@@ -47,7 +46,7 @@ namespace TestingProject
         }
 
         [Test]
-        public void TestCase2()
+        public void TestCase2() //Login with invalid credential
         {
             IWebElement logo = driver.FindElement(By.CssSelector(".login_logo"));
             bool verLogo = logo.Displayed;
@@ -69,7 +68,7 @@ namespace TestingProject
         }
 
         [Test]
-        public void TestCase3()
+        public void TestCase3() //Verify all products attribute (name, image and price) are displayed
         {
             IWebElement logo = driver.FindElement(By.CssSelector(".login_logo"));
             bool verLogo = logo.Displayed;
@@ -86,8 +85,8 @@ namespace TestingProject
             Thread.Sleep(2000);
 
             ReadOnlyCollection<IWebElement> productList = driver.FindElements(By.CssSelector("div.inventory_container div.inventory_list > div.inventory_item"));
-            List<string> productNames = new List<string>();
-            //Console.WriteLine($"Number of products found: {productList.Count}");
+            //List<string> productNames = new List<string>();
+            Console.WriteLine($"Number of products found: {productList.Count}");
 
             foreach (IWebElement product in productList)
             {
@@ -99,9 +98,11 @@ namespace TestingProject
                 //Console.WriteLine($"Product Name: {prdName}");
                 //Console.WriteLine($"Product Name for product {productList.ToList().IndexOf(product) + 1}: {prdName}");
 
-                //IWebElement productImage = product.FindElement(By.CssSelector("div.inventory_item_img"));
+                IWebElement productImage = product.FindElement(By.CssSelector("img.inventory_item_img"));
+                bool verImg = productImage.Displayed;
+                Assert.IsTrue(verImg, "Product image is not displayed");
                 //string imgAlt = productImage.GetAttribute("alt");
-                //Console.WriteLine("Img ALt Text: " + imgAlt);
+                //Console.WriteLine($"Img ALt Text: {imgAlt}");
                 
             }
         }
