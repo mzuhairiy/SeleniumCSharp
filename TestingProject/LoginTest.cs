@@ -21,16 +21,16 @@ namespace TestingProject
             driver.Navigate().GoToUrl("https://www.saucedemo.com/");
             driver.Manage().Window.Maximize();
             Thread.Sleep(2000);
+
+            IWebElement logo = driver.FindElement(By.CssSelector(".login_logo"));
+            bool verLogo = logo.Displayed;
+            Assert.IsTrue(verLogo, "Logo is not displayed.");
+            Thread.Sleep(1000);
         }
 
         [Test]
         public void TestCase1() //Login with valid credential
         {
-            IWebElement logo = driver.FindElement(By.CssSelector(".login_logo"));
-            bool verLogo = logo.Displayed;
-            Assert.IsTrue(verLogo, "Logo is not displayed.");
-            Thread.Sleep(1000);
-
             IWebElement email = driver.FindElement(By.CssSelector("#user-name"));
             IWebElement password = driver.FindElement(By.CssSelector("#password"));
             IWebElement submitBtn = driver.FindElement(By.CssSelector("#login-button"));
@@ -48,11 +48,6 @@ namespace TestingProject
         [Test]
         public void TestCase2() //Login with invalid credential
         {
-            IWebElement logo = driver.FindElement(By.CssSelector(".login_logo"));
-            bool verLogo = logo.Displayed;
-            Assert.IsTrue(verLogo, "Logo is not displayed.");
-            Thread.Sleep(1000);
-
             IWebElement email = driver.FindElement(By.CssSelector("#user-name"));
             IWebElement password = driver.FindElement(By.CssSelector("#password"));
             IWebElement submitBtn = driver.FindElement(By.CssSelector("#login-button"));
@@ -70,11 +65,6 @@ namespace TestingProject
         [Test]
         public void TestCase3() //Login with empty username
         {
-            IWebElement logo = driver.FindElement(By.CssSelector(".login_logo"));
-            bool verLogo = logo.Displayed;
-            Assert.IsTrue(verLogo, "Logo is not displayed.");
-            Thread.Sleep(1000);
-
             IWebElement email = driver.FindElement(By.CssSelector("#user-name"));
             IWebElement password = driver.FindElement(By.CssSelector("#password"));
             IWebElement submitBtn = driver.FindElement(By.CssSelector("#login-button"));
@@ -93,17 +83,12 @@ namespace TestingProject
         [Test]
         public void TestCase4() //Login with empty password
         {
-            IWebElement logo = driver.FindElement(By.CssSelector(".login_logo"));
-            bool verLogo = logo.Displayed;
-            Assert.IsTrue(verLogo, "Logo is not displayed.");
-            Thread.Sleep(1000);
-
             IWebElement email = driver.FindElement(By.CssSelector("#user-name"));
             IWebElement password = driver.FindElement(By.CssSelector("#password"));
             IWebElement submitBtn = driver.FindElement(By.CssSelector("#login-button"));
 
             email.SendKeys("standard_user");
-            password.SendKeys("secretsup");
+            password.SendKeys("");
             submitBtn.Click();
             Thread.Sleep(1000);
 
