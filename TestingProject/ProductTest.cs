@@ -21,16 +21,16 @@ namespace TestingProject
             driver.Navigate().GoToUrl("https://www.saucedemo.com/");
             driver.Manage().Window.Maximize();
             Thread.Sleep(2000);
+
+            IWebElement logo = driver.FindElement(By.CssSelector(".login_logo"));
+            bool verLogo = logo.Displayed;
+            Assert.IsTrue(verLogo, "Logo is not displayed.");
+            Thread.Sleep(1000);
         }
 
         [Test]
         public void TestCase1() //Verify all products attribute (name, image and price) are displayed
         {
-            IWebElement logo = driver.FindElement(By.CssSelector(".login_logo"));
-            bool verLogo = logo.Displayed;
-            Assert.IsTrue(verLogo, "Logo is not displayed.");
-            Thread.Sleep(1000);
-
             IWebElement email = driver.FindElement(By.CssSelector("#user-name"));
             IWebElement password = driver.FindElement(By.CssSelector("#password"));
             IWebElement submitBtn = driver.FindElement(By.CssSelector("#login-button"));
@@ -63,9 +63,77 @@ namespace TestingProject
                 IWebElement productPrice = product.FindElement(By.CssSelector("div.inventory_item_price"));
                 bool verPrc = productPrice.Displayed;
                 Assert.IsTrue(verPrc, "Product price is not displayed");
-                string price = productPrice.Text;
-                Console.WriteLine($"Price Tag for product {productList.ToList().IndexOf(product) + 1}: {price}");
+                //string price = productPrice.Text;
+                //Console.WriteLine($"Price Tag for product {productList.ToList().IndexOf(product) + 1}: {price}");
             }
+        }
+
+        [Test]
+        public void TestCase2() //add a product to cart
+        {
+            IWebElement email = driver.FindElement(By.CssSelector("#user-name"));
+            IWebElement password = driver.FindElement(By.CssSelector("#password"));
+            IWebElement submitBtn = driver.FindElement(By.CssSelector("#login-button"));
+
+            email.SendKeys("standard_user");
+            password.SendKeys("secret_sauce");
+            submitBtn.Click();
+            Thread.Sleep(2000);
+
+            IWebElement productOne = driver.FindElement(By.CssSelector("#add-to-cart-sauce-labs-backpack"));
+            productOne.Click();
+
+            IWebElement cartBadge = driver.FindElement(By.CssSelector("span.shopping_cart_badge"));
+            //string verBdg = cartBadge.Text;
+            //Console.WriteLine($"Cart Badge : {verBdg}");
+            string verBdgQty = cartBadge.Text;
+            Assert.IsTrue(verBdgQty.Contains("1"), $"Expected '1', but found '{verBdgQty}'");
+
+            IWebElement cart = driver.FindElement(By.CssSelector("a.shopping_cart_link"));
+            cart.Click();
+
+            IWebElement qty = driver.FindElement(By.CssSelector("div.cart_quantity"));
+            string verQty = qty.Text;
+            Assert.IsTrue(verQty.Contains("1"), $"Expected '1', but found '{verQty}'");
+            //string verQty = qty.Text;
+            //Console.WriteLine($"Total Qty : {verQty}");
+        }
+
+        [Test]
+        public void TestCase3() //add multiple product to cart
+        {
+            IWebElement email = driver.FindElement(By.CssSelector("#user-name"));
+            IWebElement password = driver.FindElement(By.CssSelector("#password"));
+            IWebElement submitBtn = driver.FindElement(By.CssSelector("#login-button"));
+
+            email.SendKeys("standard_user");
+            password.SendKeys("secret_sauce");
+            submitBtn.Click();
+            Thread.Sleep(2000);
+
+            IWebElement productOne = driver.FindElement(By.CssSelector("#add-to-cart-sauce-labs-backpack"));
+            productOne.Click();
+
+            IWebElement productTwo = driver.FindElement(By.CssSelector("#add-to-cart-sauce-labs-bike-light"));
+            productTwo.Click();
+
+            IWebElement productThree = driver.FindElement(By.CssSelector("#add-to-cart-sauce-labs-bolt-t-shirt"));
+            productThree.Click();
+            Thread.Sleep(1000);
+
+            IWebElement cartBadge = driver.FindElement(By.CssSelector("span.shopping_cart_badge"));
+            string verBdg = cartBadge.Text;
+            //Console.WriteLine($"Cart Badge : {verBdg}");
+            Assert.IsTrue(verBdg.Contains("3"), $"Expected '3', but found '{verBdg}'");
+
+            IWebElement cart = driver.FindElement(By.CssSelector("a.shopping_cart_link"));
+            cart.Click();
+            Thread.Sleep(2000);
+
+            ReadOnlyCollection<IWebElement> itemList = driver.FindElements(By.CssSelector("div.cart_list > div.cart_item > div.cart_quantity"));
+            //Console.WriteLine($"Number of Item: {itemList.Count}");
+            int totalList = itemList.Count;
+            Assert.IsTrue(totalList.Equals(3), $"Expected '3', but found {totalList}");
         }
 
         [TearDown]
