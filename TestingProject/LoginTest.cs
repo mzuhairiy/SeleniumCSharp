@@ -10,7 +10,7 @@ using System.Linq;
 namespace TestingProject
 {
     [TestFixture]
-    public class LoginTest
+    public class A_LoginTest
     {
         private IWebDriver driver;
 

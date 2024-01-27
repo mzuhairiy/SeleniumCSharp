@@ -10,7 +10,7 @@ using System.Linq;
 namespace TestingProject
 {
     [TestFixture]
-    public class ProductTest
+    public class B_ProductTest
     {
         private IWebDriver driver;
 
@@ -135,6 +135,7 @@ namespace TestingProject
             int totalList = itemList.Count;
             Assert.IsTrue(totalList.Equals(3), $"Expected '3', but found {totalList}");
         }
+
 
         [TearDown]
         public void TearDown()
